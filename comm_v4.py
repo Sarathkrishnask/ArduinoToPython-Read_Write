@@ -7,13 +7,11 @@ import keyboard
 import csv
 from datetime import datetime
 from sys import stdout
-from Check import *
-from slider2 import *
 
 class SerialPort(object):
     # Contains functions that enable communication between the docking station and the roarm watches
 
-    def __init__(self, serialport, serialrate=115200, csv_path="", csv_enable=False):
+    def __init__(self, serialport, serialrate=115200):
         # Initialise serial payload
         self.count = 0
         self.plSz = 0
@@ -21,16 +19,7 @@ class SerialPort(object):
 
         self.serialport = serialport
         self.ser_port = serial.Serial(serialport, serialrate)
-        
-        self.csv_enabled = csv_enable
-        if csv_enable:
-            self.csv_file = open(csv_path + "//roarm01.csv", "w")
-            self.csv = csv.writer(self.csv_file)
-            self.csv.writerow(["sys_time", "theta1", "theta2", "theta3"])
-        self.triggered = True
-        self.connected = False
-        
-        stdout.write("Initialized roarm program\n")
+    
 
 
 
@@ -85,21 +74,12 @@ class SerialPort(object):
     def run_program(self):
         while self.ser_port.is_open:
             if self.serial_read():
-                u = struct.unpack("f", self.payload[:4])    # encoder values
-                v = struct.unpack("f",self.payload[4:8])    # rtc values time delta
-                w = struct.unpack("f",self.payload[8:12])
-                print(self.ser_port.read())
+                x = struct.unpack("f", self.payload[:4])    # encoder values
+                y = struct.unpack("f",self.payload[4:8])    # rtc values time delta
+                z = struct.unpack("f",self.payload[8:12])
+                # print(self.ser_port.read())
 
-              
 
-                nw = None
-
-                if not nw:
-                    nw = datetime.now()     # datetime
-
-                if self.csv_enabled:
-                
-                  self.csv.writerow([ u,v,w])
                     
                 if keyboard.is_pressed("e"):
                     self.csv_file.close()
@@ -116,23 +96,19 @@ class SerialPort(object):
     
 if __name__ == '__main__':
     # Input angles in degrees
-    u = float(input("Enter angle u in degrees: "))
-    v = float(input("Enter angle v in degrees: "))
-    w = float(input("Enter angle w in degrees: "))
-    #u = float(input("Enter angle u in degrees: "))
-    #v = float(input("Enter angle v in degrees: "))
-    #w = float(input("Enter angle w in degrees: "))
+    x = float(input("Enter values of  x in : "))
+    y = float(input("Enter values of  y in : "))
+    z = float(input("Enter values of  z in : "))
+
 
 
     myport = SerialPort("COM7", 115200)
     # while(True):
-    # myport.run_program()
-    myport.serial_write(u)
+    myport.run_program()
+    myport.serial_read()
+    myport.serial_write(x)
     
-        # myport.run_program()
 
-# Option 2: Directly passing u, v, and w
-#myport.serial_write(u, v, w)
 
     
 
