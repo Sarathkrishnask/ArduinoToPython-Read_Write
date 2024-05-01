@@ -1,33 +1,3 @@
-/*
-  AnalogReadSerial
-
-  Reads an analog input on pin 0, prints the result to the Serial Monitor.
-  Graphical representation is available using Serial Plotter (Tools > Serial Plotter menu).
-  Attach the center pin of a potentiometer to pin A0, and the outside pins to +5V and ground.
-
-  This example code is in the public domain.
-
-  https://www.arduino.cc/en/Tutorial/BuiltInExamples/AnalogReadSerial
-*/
-
-//#include "HX711.h"
-//#include <Encoder.h>
-//
-//// HX711 circuit wiring
-//const int LOADCELL_DOUT_PIN = 3;
-//const int LOADCELL_SCK_PIN = 4;
-//const byte interruptPin =2;
-//long reading,offset=0;
-//float weight=0;
-////uint16_t enc_=0;
-////bool state = HIGH;
-//int ledPin = 10;
-//volatile byte state = LOW;
-//signed int emg1_ =A1;
-//signed int emg2_ =A0;
-//Encoder myEnc(22, 23);
-//
-//HX711 scale;
 
 typedef union {
   float val_;
@@ -39,26 +9,15 @@ typedef union {
 long oldPosition  = -999;
 LongBytes force, emg_chnl_1,emg_chnl_2, encoder_,timeVal;
 
-// the setup routine runs once when you press reset:
-//void setup() {
-//  // initialize Serial communication at 9600 bits per second:
-//  Serial.begin(115200);
-//  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-//  pinMode(interruptPin, INPUT_PULLUP);
-//  attachInterrupt(digitalPinToInterrupt(interruptPin), blink, CHANGE);
-//  pinMode(ledPin,OUTPUT);
-//}
-  
+
 void blink(){
   offset = scale.read_average();
 }
 void count(){
-
   state = !state;
 
 } 
 
-// the loop routine runs over and over again forever:
 void write_data() {
   count();
   digitalWrite(ledPin, state);
@@ -85,11 +44,9 @@ void write_data() {
   Serial.write(header[1]);
   Serial.write(header[2]);
 
-
   // print out the value you read:
   //  Serial.write(sensorValue);
   
-
   for (int i = 0; i < 4; i++) {
     Serial.write(force.bytes[i]);
     chkSum += force.bytes[i];

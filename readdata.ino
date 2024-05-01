@@ -3,7 +3,7 @@ void read_data()
 {
   display.clearDisplay();
 
-  if (Serial.available() >= 5) { // Ensure that at least 5 bytes are available for processing
+  if (Serial.available() >= 0) { 
     byte header1 = Serial.read();
     byte header2 = Serial.read();
     byte payloadSize = Serial.read()-1;
