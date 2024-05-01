@@ -1,11 +1,6 @@
-"""This program is for roarm """
-
-from itertools import starmap
 import serial
 import struct
 import keyboard
-import csv
-from datetime import datetime
 from sys import stdout
 
 class SerialPort(object):
@@ -24,7 +19,7 @@ class SerialPort(object):
 
 
     def serial_write(self, float_value):
-    # Convert float to bytes
+        # Convert float to bytes
         float_bytes = struct.pack('f', float_value)
 
         # Format:
@@ -74,16 +69,11 @@ class SerialPort(object):
     def run_program(self):
         while self.ser_port.is_open:
             if self.serial_read():
-                x = struct.unpack("f", self.payload[:4])    # encoder values
-                y = struct.unpack("f",self.payload[4:8])    # rtc values time delta
+                x = struct.unpack("f", self.payload[:4])    
+                y = struct.unpack("f",self.payload[4:8])    
                 z = struct.unpack("f",self.payload[8:12])
                 # print(self.ser_port.read())
 
-
-                    
-                if keyboard.is_pressed("e"):
-                    self.csv_file.close()
-                    break
             if keyboard.is_pressed("q"):
                 print("closing")
                 break
@@ -95,10 +85,10 @@ class SerialPort(object):
         print("program ended")
     
 if __name__ == '__main__':
-    # Input angles in degrees
-    x = float(input("Enter values of  x in : "))
-    y = float(input("Enter values of  y in : "))
-    z = float(input("Enter values of  z in : "))
+    # Input values
+    x = float(input("Enter values of  x : "))
+    y = float(input("Enter values of  y : "))
+    z = float(input("Enter values of  z : "))
 
 
 
